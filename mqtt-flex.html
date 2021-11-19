@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('mqtt-dynamic-connect',{
+    RED.nodes.registerType('mqtt-flex-connect',{
         category: 'network',
         color: "#e8bfd8",
         defaults: {
@@ -9,11 +9,11 @@
         outputs:1,
         icon: "bridge.svg",
         label: function() {
-            return this.name||"mqtt-dynamic-connect";
+            return this.name||"mqtt-flex-connect";
         }
     });
 
-    RED.nodes.registerType('mqtt-dynamic-disconnect',{
+    RED.nodes.registerType('mqtt-flex-disconnect',{
         category: 'network',
         color: "#e8bfd8",
         defaults: {
@@ -23,11 +23,11 @@
         outputs:0,
         icon: "bridge.svg",
         label: function() {
-            return this.name||"mqtt-dynamic-disconnect";
+            return this.name||"mqtt-flex-disconnect";
         }
     });
 
-    RED.nodes.registerType('mqtt-dynamic-subscribe',{
+    RED.nodes.registerType('mqtt-flex-subscribe',{
         category: 'network',
         color: "#e8bfd8",
         defaults: {
@@ -37,11 +37,11 @@
         outputs:1,
         icon: "bridge.svg",
         label: function() {
-            return this.name||"mqtt-dynamic-subscribe";
+            return this.name||"mqtt-flex-subscribe";
         }
     });
 
-    RED.nodes.registerType('mqtt-dynamic-publish',{
+    RED.nodes.registerType('mqtt-flex-publish',{
         category: 'network',
         color: "#e8bfd8",
         defaults: {
@@ -51,11 +51,11 @@
         outputs:1,
         icon: "bridge.svg",
         label: function() {
-            return this.name||"mqtt-dynamic-publish";
+            return this.name||"mqtt-flex-publish";
         }
     });
 
-    RED.nodes.registerType('mqtt-dynamic-unsubscribe',{
+    RED.nodes.registerType('mqtt-flex-unsubscribe',{
         category: 'network',
         color: "#e8bfd8",
         defaults: {
@@ -65,11 +65,11 @@
         outputs:0,
         icon: "bridge.svg",
         label: function() {
-            return this.name||"mqtt-dynamic-unsubscribe";
+            return this.name||"mqtt-flex-unsubscribe";
         }
     });
 
-    RED.nodes.registerType('mqtt-dynamic-status',{
+    RED.nodes.registerType('mqtt-flex-status',{
         category: 'network',
         color: "#e8bfd8",
         defaults: {
@@ -79,48 +79,48 @@
         outputs:1,
         icon: "bridge.svg",
         label: function() {
-            return this.name||"mqtt-dynamic-status";
+            return this.name||"mqtt-flex-status";
         }
     });
 
 </script>
 
-<script type="text/html" data-template-name="mqtt-dynamic-unsubscribe">
+<script type="text/html" data-template-name="mqtt-flex-unsubscribe">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
 
-<script type="text/html" data-template-name="mqtt-dynamic-subscribe">
+<script type="text/html" data-template-name="mqtt-flex-subscribe">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
 
-<script type="text/html" data-template-name="mqtt-dynamic-connect">
+<script type="text/html" data-template-name="mqtt-flex-connect">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
 
-<script type="text/html" data-template-name="mqtt-dynamic-disconnect">
+<script type="text/html" data-template-name="mqtt-flex-disconnect">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
 
-<script type="text/html" data-template-name="mqtt-dynamic-publish">
+<script type="text/html" data-template-name="mqtt-flex-publish">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
 
-<script type="text/html" data-template-name="mqtt-dynamic-status">
+<script type="text/html" data-template-name="mqtt-flex-status">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
