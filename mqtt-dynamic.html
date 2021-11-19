@@ -1,0 +1,128 @@
+<script type="text/javascript">
+    RED.nodes.registerType('mqtt-dynamic-connect',{
+        category: 'network',
+        color: "#e8bfd8",
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "bridge.svg",
+        label: function() {
+            return this.name||"mqtt-dynamic-connect";
+        }
+    });
+
+    RED.nodes.registerType('mqtt-dynamic-disconnect',{
+        category: 'network',
+        color: "#e8bfd8",
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:0,
+        icon: "bridge.svg",
+        label: function() {
+            return this.name||"mqtt-dynamic-disconnect";
+        }
+    });
+
+    RED.nodes.registerType('mqtt-dynamic-subscribe',{
+        category: 'network',
+        color: "#e8bfd8",
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "bridge.svg",
+        label: function() {
+            return this.name||"mqtt-dynamic-subscribe";
+        }
+    });
+
+    RED.nodes.registerType('mqtt-dynamic-publish',{
+        category: 'network',
+        color: "#e8bfd8",
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "bridge.svg",
+        label: function() {
+            return this.name||"mqtt-dynamic-publish";
+        }
+    });
+
+    RED.nodes.registerType('mqtt-dynamic-unsubscribe',{
+        category: 'network',
+        color: "#e8bfd8",
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:0,
+        icon: "bridge.svg",
+        label: function() {
+            return this.name||"mqtt-dynamic-unsubscribe";
+        }
+    });
+
+    RED.nodes.registerType('mqtt-dynamic-status',{
+        category: 'network',
+        color: "#e8bfd8",
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "bridge.svg",
+        label: function() {
+            return this.name||"mqtt-dynamic-status";
+        }
+    });
+
+</script>
+
+<script type="text/html" data-template-name="mqtt-dynamic-unsubscribe">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-template-name="mqtt-dynamic-subscribe">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-template-name="mqtt-dynamic-connect">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-template-name="mqtt-dynamic-disconnect">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-template-name="mqtt-dynamic-publish">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-template-name="mqtt-dynamic-status">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
