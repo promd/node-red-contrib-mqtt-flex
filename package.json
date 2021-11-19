@@ -13,6 +13,7 @@
     "node-red"
   ],
   "node-red": {
+    "version": ">=1.0.0",
     "nodes": {
       "mqtt-flex": "mqtt-flex.js"
     }
