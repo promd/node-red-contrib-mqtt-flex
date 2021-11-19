@@ -1,11 +1,11 @@
 {
-  "name": "node-red-contrib-mqtt-dynamic",
+  "name": "node-red-contrib-mqtt-flex",
   "version": "0.1.1",
   "description": "Set of Nodes for NodeRed that maintains multiple MQTT connections at the same time. Connections can be configured and created on run-time.",
   "dependencies": {
     "mqtt": "^4.2.8"
   },
-  "main": "mqtt-dynamic.js",
+  "main": "mqtt-flex.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,7 +14,7 @@
   ],
   "node-red": {
     "nodes": {
-      "mqtt-dynamic": "mqtt-dynamic.js"
+      "mqtt-flex": "mqtt-flex.js"
     }
   },
   "author": "",

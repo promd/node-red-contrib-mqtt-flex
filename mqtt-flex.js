@@ -296,10 +296,10 @@ module.exports = function(RED) {
 
     }
 
-    RED.nodes.registerType("mqtt-dynamic-connect",ConnectionNode);
-    RED.nodes.registerType("mqtt-dynamic-disconnect",DisconnectNode);
-    RED.nodes.registerType("mqtt-dynamic-publish",PublishNode);
-    RED.nodes.registerType("mqtt-dynamic-subscribe",SubscribeNode);
-    RED.nodes.registerType("mqtt-dynamic-unsubscribe",UnsubscribeNode);
-    RED.nodes.registerType("mqtt-dynamic-status",StatusNode);
+    RED.nodes.registerType("mqtt-flex-connect",ConnectionNode);
+    RED.nodes.registerType("mqtt-flex-disconnect",DisconnectNode);
+    RED.nodes.registerType("mqtt-flex-publish",PublishNode);
+    RED.nodes.registerType("mqtt-flex-subscribe",SubscribeNode);
+    RED.nodes.registerType("mqtt-flex-unsubscribe",UnsubscribeNode);
+    RED.nodes.registerType("mqtt-flex-status",StatusNode);
 }
