@@ -99,6 +99,18 @@ module.exports = function(RED) {
         static clients = {};
         static client_stats = {};
 
+        static matchTopics(received,subscribtions) {
+            for (subscribed in subscribtions) {
+                subscribed = subscribed.replace(/\+/g,'[^\/]+')
+                subscribed = subscribed.replace(/\#/g,'.*')
+                subscribed = subscribed.replace(/\$/g,'\\$')
+                subscribed = subscribed.replace(/\//g,'\\/')
+                subscribed = '^' + subscribed + '$'
+            
+                return received.match(subscribed) != null
+            }
+        }
+        
         static closeClients() {
             for (const [id, client] of Object.entries(DynMQTT.clients))
                 client.close();
@@ -201,7 +213,7 @@ module.exports = function(RED) {
             });
 
             this.connection.on('message', (topic, message) => {
-                if (this.subscriptions.hasOwnProperty(topic)) { 
+                if (DynMQTT.matchTopics(topic,Object.keys(this.subscriptions))) { 
                     this.subscriptions[topic](message);
                 } else {
                     console.error("Rec msg w/o subscription on " + topic);
