@@ -13,9 +13,7 @@ module.exports = function(RED) {
         node.on('input', function(msg, send, done) {
             let client = DynMQTT.createClient(msg,function(new_status){ 
                 node.status(new_status.summary);
-                node.send({ 
-                    "client_id": new_status.client_id,
-                    "payload": new_status.payload });
+                node.send(new_status)
             })
             done();
         });
@@ -58,13 +56,22 @@ module.exports = function(RED) {
         node.on('input', function(msg, send, done) {
             let client = DynMQTT.getClient(msg.client_id);
             if (client) {
-                client.subscribe(msg.topic,(message) => { 
-                    send({
-                        "payload": JSON.parse(message.toString()),
-                        "client_id": client.client_id,
-                        "topic": msg.topic
+                let topics = []
+                if (typeof msg.topic === 'array') 
+                    topics = msg.topic
+                else
+                    topics.push(msg.topic)
+
+                for (let t of topics) {
+                    // -- actualTopic contains the real topic the message was received at (no wildards)
+                    client.subscribe(t,(actualTopic,message) => { 
+                        send({
+                            "payload": JSON.parse(message.toString()),
+                            "client_id": client.client_id,
+                            "topic": actualTopic
+                        })
                     })
-                })
+                }
                 done();
             } else
                 done("Client " + msg.client_id + " for Subsription not known!");
@@ -99,16 +106,18 @@ module.exports = function(RED) {
         static clients = {};
         static client_stats = {};
 
-        static matchTopics(received,subscribtions) {
-            for (subscribed in subscribtions) {
-                subscribed = subscribed.replace(/\+/g,'[^\/]+')
-                subscribed = subscribed.replace(/\#/g,'.*')
-                subscribed = subscribed.replace(/\$/g,'\\$')
-                subscribed = subscribed.replace(/\//g,'\\/')
-                subscribed = '^' + subscribed + '$'
+        static findTopic(received,subscribtions) {
+            for (let subscribed of subscribtions) {
+                let regex  = subscribed.replace(/\+/g,'[^\/]+')
+                regex = regex.replace(/\#/g,'.*')
+                regex = regex.replace(/\$/g,'\\$')
+                regex = regex.replace(/\//g,'\\/')
+                regex = '^' + regex + '$'
             
-                return received.match(subscribed) != null
+                if (received.match(regex) != null)
+                    return subscribed
             }
+            return false
         }
         
         static closeClients() {
@@ -120,10 +129,10 @@ module.exports = function(RED) {
         static createClient(config, status_callback) {
             const client_id = config.payload.client_id;
             if (DynMQTT.clients.hasOwnProperty(client_id)) {
-                console.log("Client already known: " + client_id);
+                console.info("Client already known: " + client_id);
                 //ToDo: check health status of client
             } else {
-                console.log("Creating new client: " + client_id);
+                console.info("Creating new client: " + client_id);
                 DynMQTT.clients[client_id] = new DynMQTT(client_id,config.payload,status_callback);
             }
             return DynMQTT.clients[client_id]
@@ -213,8 +222,9 @@ module.exports = function(RED) {
             });
 
             this.connection.on('message', (topic, message) => {
-                if (DynMQTT.matchTopics(topic,Object.keys(this.subscriptions))) { 
-                    this.subscriptions[topic](message);
+                let subTopic = DynMQTT.findTopic(topic,Object.keys(this.subscriptions))
+                if (subTopic) { 
+                    this.subscriptions[subTopic](topic,message);
                 } else {
                     console.error("Rec msg w/o subscription on " + topic);
                 }
@@ -223,16 +233,14 @@ module.exports = function(RED) {
         }
 
         change_status(status) {
-            let ret = {
-                "client_id"  : this.client_id,
-                "summary"    : "",
-                "payload"    : {
-                    "status_new" : status,
-                    "status_old" : this.status
-                }
-            };
+            console.debug(this.client_id + ": " + this.status + " -> " + status);
 
-            console.log(this.client_id + " -> " + status);
+            let ret = { "mqtt_change" : {
+                "client_id"     : this.client_id,
+                "status_last"   : this.status,
+                "status_new"    : status
+            } }
+
             // --- Take care of the previous status (only if it is set)
             if (this.status) {
                 if (DynMQTT.client_stats.hasOwnProperty(this.status))
@@ -243,6 +251,8 @@ module.exports = function(RED) {
 
             // --- Take care of the new status
             this.status = status;
+            // --- Populate the response with a list of the current clients
+            ret["payload"] = DynMQTT.listClients()
 
             if (this.status != 'closed') { // -- we don't count closed (they will never decrement if reconnect is disabled)
                 if (DynMQTT.client_stats.hasOwnProperty(this.status))
@@ -265,11 +275,11 @@ module.exports = function(RED) {
             if (this.subscriptions.hasOwnProperty(topic)) {
                 //console.log("Already subscribed");
             } else {
-                //console.log("Creating new subscription");
-                this.subscriptions[topic] = callback;
-                this.connection.subscribe(topic, function (err, result) {
+                this.connection.subscribe(topic, (err, result) => {
                     if (!err){
-                        console.log("Subscribed to:" + result[0].topic);
+                        console.info("Subscribed to:" + result[0].topic);
+                        this.subscriptions[topic] = callback;
+                        this.change_status(this.status);
                     }
                     else console.error(err);
                 });
@@ -278,10 +288,11 @@ module.exports = function(RED) {
 
         unsubscribe(topic) {
             if (this.subscriptions.hasOwnProperty(topic)) {
-                console.log("Removing subscription to:" + topic);
+                console.info("Removing subscription to:" + topic);
                 this.connection.unsubscribe(topic,(err) => {
                     if (err)
                         console.error(err);
+                    this.change_status(this.status);
                 });
                 delete this.subscriptions[topic];
             } else {
